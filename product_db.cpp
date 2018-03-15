@@ -19,15 +19,20 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 8752 $ $Date:: 2018-03-13 #$ $Author: serge $
+// $Revision: 8757 $ $Date:: 2018-03-14 #$ $Author: serge $
 
 #include "product_db.h"             // self
+
+#include <algorithm>                // std::transform
 
 #include "utils/dummy_logger.h"     // dummy_log_debug
 #include "utils/read_config_file.h" // utils::read_config_file
 #include "utils/tokenizer.h"        // tokenize_to_vector
+#include "utils/tokenizer_ext.h"    // tokenize_and_convert
 #include "utils/assert.h"           // ASSERT
 #include "utils/mutex_helper.h"     // MUTEX_SCOPE_LOCK
+#include "lang_tools/parser.h"      // lang_tools::to_lang()
+
 
 namespace product_db
 {
@@ -91,21 +96,19 @@ void ProductDb::process_line( const FlatProduct & e )
 
 ProductDb::FlatProduct ProductDb::to_flat_product( const std::string & l )
 {
-    // format: 1;some product name;templ_id_1,...,templ_id_n;lang_code_1,...,lang_code_m.
+    // format: 1;some product name;templ_id_1 ... templ_id_n;lang_code_1 ... lang_code_m.
     FlatProduct res;
 
     std::vector< std::string > elems;
     tokenize_to_vector( elems, l, ";" );
 
     if( elems.size() < 4 )
-        throw std::runtime_error( "not enough arguments (<5) in entry: " + l  );
+        throw std::runtime_error( "not enough arguments (<4) in entry: " + l  );
 
     try
     {
-        res.id          = std::stoi( elems[1] );
-        res.locale      = lang_tools::to_lang_iso( elems[2] );
-        res.name        = elems[3];
-        res.templ       = elems[4];
+        res.product_id      = std::stoi( elems[0] );
+        res.product         = to_product( elems );
     }
     catch( std::exception & e )
     {
@@ -115,4 +118,26 @@ ProductDb::FlatProduct ProductDb::to_flat_product( const std::string & l )
     return res;
 }
 
+Product ProductDb::to_product( const std::vector<std::string> & elems )
+{
+    // format: 1;some product name;templ_id_1 ... templ_id_n;lang_code_1 ... lang_code_m.
+    Product res;
+
+    res.name    = elems[1];
+
+    std::vector<template_id_t> templ_ids;
+    utils::tokenize_and_convert( templ_ids, elems[2], " " );
+
+    res.template_ids    = std::set<template_id_t>( templ_ids.begin(), templ_ids.end() );
+
+    std::vector<std::string> lang_codes;
+    tokenize_to_vector( lang_codes, elems[3], " " );
+
+    std::transform(
+            lang_codes.begin(), lang_codes.end(),
+            std::inserter( res.langs, res.langs.begin() ),
+            [] ( const std::string & s ) { return lang_tools::to_lang( s ); } );
+
+    return res;
+}
 } // namespace product_db

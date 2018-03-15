@@ -1,0 +1,8 @@
+#product id;description;template ids;language ids;
+
+1;all products (all languages);1 2 3;EN DE RU;
+2;all products (English);1 2 3;EN;
+3;all products (German);1 2 3;DEX;
+4;some products (all languages);2 3;EN DE RU;
+5;some products (English);2 3;EN;
+6;some products (German);2 3;DE;

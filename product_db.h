@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 8752 $ $Date:: 2018-03-13 #$ $Author: serge $
+// $Revision: 8755 $ $Date:: 2018-03-14 #$ $Author: serge $
 
 #ifndef LIB_PRODUCT_DB__PRODUCT_DB_H
 #define LIB_PRODUCT_DB__PRODUCT_DB_H
@@ -61,6 +61,8 @@ private:
     void process_line( const FlatProduct & p );
 
     FlatProduct to_flat_product( const std::string & l );
+
+    Product to_product( const std::vector<std::string> & elems );
 
 private:
     mutable std::mutex          mutex_;
