@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 8746 $ $Date:: 2018-03-12 #$ $Author: serge $
+// $Revision: 8752 $ $Date:: 2018-03-13 #$ $Author: serge $
 
 #include "product_db.h"             // self
 
@@ -76,11 +76,16 @@ void ProductDb::process_line( const std::string & line )
 {
     auto e = to_flat_product( line );
 
+    process_line( e );
+}
+
+void ProductDb::process_line( const FlatProduct & e )
+{
     auto b = map_id_to_product_.insert( std::make_pair( e.product_id, e.product ) ).second;
 
     if( b == false )
     {
-        throw std::runtime_error( "duplicate template id " + std::to_string( e.product_id ) );
+        throw std::runtime_error( "duplicate product id " + std::to_string( e.product_id ) );
     }
 }
 

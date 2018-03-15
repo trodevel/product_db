@@ -19,12 +19,12 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 8749 $ $Date:: 2018-03-12 #$ $Author: serge $
+// $Revision: 8752 $ $Date:: 2018-03-13 #$ $Author: serge $
 
 #ifndef LIB_PRODUCT_DB__PRODUCT_DB_H
 #define LIB_PRODUCT_DB__PRODUCT_DB_H
 
-#include <set>              // std::set
+#include <map>              // std::map
 #include <vector>           // std::vector
 #include <mutex>            // std::mutex
 
@@ -58,6 +58,7 @@ private:
     void parse_lines( const std::vector<std::string> & lines );
 
     void process_line( const std::string & line );
+    void process_line( const FlatProduct & p );
 
     FlatProduct to_flat_product( const std::string & l );
 
