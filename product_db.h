@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 8755 $ $Date:: 2018-03-14 #$ $Author: serge $
+// $Revision: 8769 $ $Date:: 2018-03-15 #$ $Author: serge $
 
 #ifndef LIB_PRODUCT_DB__PRODUCT_DB_H
 #define LIB_PRODUCT_DB__PRODUCT_DB_H
@@ -42,6 +42,8 @@ public:
     bool init(
             uint32_t            log_id,
             const std::string   & product_db );
+
+    const Product * get_product( product_id_t product_id ) const;
 
 private:
 

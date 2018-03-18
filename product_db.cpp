@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 8757 $ $Date:: 2018-03-14 #$ $Author: serge $
+// $Revision: 8769 $ $Date:: 2018-03-15 #$ $Author: serge $
 
 #include "product_db.h"             // self
 
@@ -51,22 +51,25 @@ bool ProductDb::init(
     if( product_db.empty() )
         return false;
 
-    try
-    {
-        std::vector<std::string> lines;
+    std::vector<std::string> lines;
 
-        utils::read_config_file( product_db, lines );
+    utils::read_config_file( product_db, lines );
 
-        parse_lines( lines );
+    parse_lines( lines );
 
-        dummy_log_info( log_id_, "loaded %u products from %s", lines.size(), product_db.c_str() );
-    }
-    catch( std::exception & e )
-    {
-        throw e;
-    }
+    dummy_log_info( log_id_, "loaded %u products from %s", lines.size(), product_db.c_str() );
 
     return true;
+}
+
+const Product * ProductDb::get_product( product_id_t product_id ) const
+{
+    auto it = map_id_to_product_.find( product_id );
+
+    if( it == map_id_to_product_.end() )
+        return nullptr;
+
+    return & it->second;
 }
 
 void ProductDb::parse_lines( const std::vector<std::string> & lines )
@@ -112,7 +115,7 @@ ProductDb::FlatProduct ProductDb::to_flat_product( const std::string & l )
     }
     catch( std::exception & e )
     {
-        throw std::runtime_error( "invalid entry: " + l );
+        throw std::runtime_error( std::string( e.what() ) + ": " + l );
     }
 
     return res;
@@ -136,7 +139,8 @@ Product ProductDb::to_product( const std::vector<std::string> & elems )
     std::transform(
             lang_codes.begin(), lang_codes.end(),
             std::inserter( res.langs, res.langs.begin() ),
-            [] ( const std::string & s ) { return lang_tools::to_lang( s ); } );
+            [] ( const std::string & s ) { auto lang = lang_tools::to_lang( s );
+            if( lang == lang_tools::lang_e::UNDEF ) throw std::runtime_error( "unknown language " + s ); return lang; } );
 
     return res;
 }

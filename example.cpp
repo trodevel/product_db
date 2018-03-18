@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 8758 $ $Date:: 2018-03-14 #$ $Author: serge $
+// $Revision: 8767 $ $Date:: 2018-03-15 #$ $Author: serge $
 
 #include <cstdio>
 #include <sstream>                          // std::stringstream
@@ -29,6 +29,24 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include "utils/dummy_logger.h"             // dummy_log_set_log_level
 #include "lang_tools/str_helper.h"          // lang_tools::to_string_iso
+
+void loading_test( uint32_t log_id, const char * name, const char * filename )
+{
+    std::cout << name << " - started" << std::endl;
+
+    try
+    {
+        product_db::ProductDb prod_db;
+
+        prod_db.init( log_id, filename );
+    }
+    catch( std::exception & e )
+    {
+        std::cout << "exception: " << e.what() << std::endl;
+    }
+
+    std::cout << name << " - finished" << std::endl;
+}
 
 int main()
 {
@@ -41,6 +59,9 @@ int main()
         product_db::ProductDb prod_db;
 
         prod_db.init( log_id, "product_db.csv" );
+
+        loading_test( log_id, "01", "broken_product_db_01.csv" );
+        loading_test( log_id, "02", "broken_product_db_02.csv" );
 
         return EXIT_SUCCESS;
     }
