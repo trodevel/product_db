@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 8767 $ $Date:: 2018-03-15 #$ $Author: serge $
+// $Revision: 8774 $ $Date:: 2018-03-16 #$ $Author: serge $
 
 #include <cstdio>
 #include <sstream>                          // std::stringstream
@@ -28,7 +28,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "product_db.h"                     // ProductDb
 
 #include "utils/dummy_logger.h"             // dummy_log_set_log_level
-#include "lang_tools/str_helper.h"          // lang_tools::to_string_iso
+#include "str_helper.h"                     // write()
 
 void loading_test( uint32_t log_id, const char * name, const char * filename )
 {
@@ -48,6 +48,50 @@ void loading_test( uint32_t log_id, const char * name, const char * filename )
     std::cout << name << " - finished" << std::endl;
 }
 
+void test_03( product_db::ProductDb & prod_db )
+{
+    std::cout << "03" << " - started" << std::endl;
+
+    unsigned prod_id = 1;
+
+    auto prod = prod_db.get_product( prod_id );
+
+    if( prod )
+    {
+        std::cout << "OK: found product - ";
+        product_db::StrHelper::write( std::cout, * prod );
+        std::cout << std::endl;
+    }
+    else
+    {
+        std::cout << "ERROR: product id " << prod_id << " not found" << std::endl;
+    }
+
+    std::cout << "03" << " - finished" << std::endl;
+}
+
+void test_04( product_db::ProductDb & prod_db )
+{
+    std::cout << "04" << " - started" << std::endl;
+
+    unsigned prod_id = 77777777;
+
+    auto prod = prod_db.get_product( prod_id );
+
+    if( prod )
+    {
+        std::cout << "ERROR: found unexpected product - ";
+        product_db::StrHelper::write( std::cout, * prod );
+        std::cout << std::endl;
+    }
+    else
+    {
+        std::cout << "OK: invalid product id " << prod_id << " not found" << std::endl;
+    }
+
+    std::cout << "04" << " - finished" << std::endl;
+}
+
 int main()
 {
     try
@@ -62,6 +106,8 @@ int main()
 
         loading_test( log_id, "01", "broken_product_db_01.csv" );
         loading_test( log_id, "02", "broken_product_db_02.csv" );
+        test_03( prod_db );
+        test_04( prod_db );
 
         return EXIT_SUCCESS;
     }
