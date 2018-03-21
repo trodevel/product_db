@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 8774 $ $Date:: 2018-03-16 #$ $Author: serge $
+// $Revision: 8802 $ $Date:: 2018-03-20 #$ $Author: serge $
 
 #include <cstdio>
 #include <sstream>                          // std::stringstream
@@ -58,9 +58,7 @@ void test_03( product_db::ProductDb & prod_db )
 
     if( prod )
     {
-        std::cout << "OK: found product - ";
-        product_db::StrHelper::write( std::cout, * prod );
-        std::cout << std::endl;
+        std::cout << "OK: found product - " << * prod << std::endl;
     }
     else
     {
@@ -80,9 +78,7 @@ void test_04( product_db::ProductDb & prod_db )
 
     if( prod )
     {
-        std::cout << "ERROR: found unexpected product - ";
-        product_db::StrHelper::write( std::cout, * prod );
-        std::cout << std::endl;
+        std::cout << "ERROR: found unexpected product - " << * prod << std::endl;
     }
     else
     {

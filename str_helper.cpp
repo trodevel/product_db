@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 8770 $ $Date:: 2018-03-16 #$ $Author: serge $
+// $Revision: 8801 $ $Date:: 2018-03-20 #$ $Author: serge $
 
 #include "str_helper.h"             // self
 
@@ -45,6 +45,15 @@ std::ostream & StrHelper::write( std::ostream & os, const Product & l )
     }
 
     return os;
+}
+
+std::string StrHelper::to_string( const Product & l )
+{
+    std::stringstream os;
+
+    write( os, l );
+
+    return os.str();
 }
 
 } // namespace product_db

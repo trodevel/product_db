@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 8770 $ $Date:: 2018-03-16 #$ $Author: serge $
+// $Revision: 8801 $ $Date:: 2018-03-20 #$ $Author: serge $
 
 #ifndef LIB_PRODUCT_DB__STR_HELPER_H
 #define LIB_PRODUCT_DB__STR_HELPER_H
@@ -35,8 +35,15 @@ class StrHelper
 {
 public:
     static std::ostream & write( std::ostream & os, const Product & l );
+
+    static std::string to_string( const Product & l );
 };
 
-} // namespace phonebook
+} // namespace product_db
+
+inline std::ostream& operator<<( std::ostream& os, const product_db::Product & l )
+{
+    return product_db::StrHelper::write( os, l );
+}
 
 #endif // LIB_PRODUCT_DB__STR_HELPER_H
