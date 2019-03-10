@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 8769 $ $Date:: 2018-03-15 #$ $Author: serge $
+// $Revision: 10609 $ $Date:: 2019-03-10 #$ $Author: serge $
 
 #include "product_db.h"             // self
 
@@ -29,7 +29,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "utils/read_config_file.h" // utils::read_config_file
 #include "utils/tokenizer.h"        // tokenize_to_vector
 #include "utils/tokenizer_ext.h"    // tokenize_and_convert
-#include "utils/assert.h"           // ASSERT
+#include "utils/utils_assert.h"           // ASSERT
 #include "utils/mutex_helper.h"     // MUTEX_SCOPE_LOCK
 #include "lang_tools/parser.h"      // lang_tools::to_lang()
 
